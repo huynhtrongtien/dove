@@ -1,36 +1,36 @@
-@port = 3001
+@port = 3002
 @host = localhost:{{port}}
-@token = Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJUR0wgU29sdXRpb25zIiwiZXhwIjoiMjAyNC0wNy0wMVQxMDowMToxMy42NzQ2NTIrMDc6MDAiLCJ1c2VyX2lkIjo3fQ.gri5NLpqlnKegM660_HXgoWYuxj3Jy1mvkN4GdT9lSU
+@token = Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiIyMDI1LTAxLTA2VDE3OjI3OjIzLjA1NDkzKzA3OjAwIiwidXNlcl9pZCI6MX0.1-83ch9WOjroGCqOEv2ynSo4nTJLUzc-5CQJGJrG58g
 @user = users
 
 ###########
-# GROUP CATEGORY #
+# CATEGORY #
 ###########
 # Create
 POST http://{{host}}/api/v1/categories HTTP/1.1
 {{token}}
 Content-Type: application/json
 
-{"name":"Son môi","group_uuid":"9514899a-efdc-4e51-b623-2bf2181bb39e","display_order":2}
+{"fullname":"Trang phục","code":"Cat002"}
 
 ###########
 # Read
-GET http://{{host}}/api/v1/categories/98deaf6c-1790-46b8-ad56-3008bbd241df HTTP/1.1
+GET http://{{host}}/api/v1/categories/b08bbdef-551a-4e04-b78e-45aa4d4458ba HTTP/1.1
 {{token}}
 Content-Type: application/json
 
 ###########
 # List
-GET http://{{host}}/api/v1/categories?group_uuid=46ad8ebc-1168-4e39-8bf9-96fa6d77bc9b HTTP/1.1
+GET http://{{host}}/api/v1/categories HTTP/1.1
 {{token}}
 Content-Type: application/json
 
 ###########
 # Update
-PUT http://{{host}}/api/v1/categories/ff9f86e8-f8c7-429e-91e6-c389e6ac274b HTTP/1.1
+PUT http://{{host}}/api/v1/categories/b08bbdef-551a-4e04-b78e-45aa4d4458ba HTTP/1.1
 {{token}}
 Content-Type: application/json
 
-{"name":"Bài tập toán 12","group_uuid":"9514899a-efdc-4e51-b623-2bf2181bb39e","display_order":4}
+{"fullname":"Bàn ghế","code":"Cat003"}
 
 ###

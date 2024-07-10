@@ -1,6 +1,7 @@
 package category
 
 import (
+	"errors"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -10,6 +11,7 @@ import (
 	"github.com/huynhtrongtien/dove/pkg/http_parser"
 	"github.com/huynhtrongtien/dove/pkg/http_response"
 	"github.com/huynhtrongtien/dove/pkg/log"
+	"gorm.io/gorm"
 )
 
 func (h Handler) Create(c *gin.Context) {
@@ -25,7 +27,26 @@ func (h Handler) Create(c *gin.Context) {
 		return
 	}
 
+	// check name exist
+	existData, err := h.Category.ReadByName(ctx, req.FullName)
+	if err == nil {
+		log.For(c).Debug("[update-category] category name is exist", log.Field("user_id", userID), log.Field("uuid", existData.UUID))
+		c.JSON(http.StatusCreated, &apis.CreateResponse{
+			UUID: existData.UUID,
+		})
+		return
+	}
+
+	if errors.Is(err, gorm.ErrRecordNotFound) == false {
+		log.For(c).Debug("[update-category] query database failed", log.Field("user_id", userID), log.Err(err))
+		http_response.Error(c, http.StatusInternalServerError, err, nil)
+		return
+	}
+
 	data := &entities.Category{
+		Base: entities.Base{
+			CreatedBy: userID,
+		},
 		FullName: req.FullName,
 		Code:     req.Code,
 	}
