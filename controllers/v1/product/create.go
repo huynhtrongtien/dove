@@ -31,7 +31,7 @@ func (h Handler) Create(c *gin.Context) {
 	categoryUUID := c.Param("category_uuid")
 	category, err := h.Category.ReadByUUID(ctx, categoryUUID)
 	if err != nil {
-		log.For(c).Debug("[create-district] query category info failed", log.Field("user_id", userID), log.Field("category_uuid", categoryUUID), log.Err(err))
+		log.For(c).Debug("[create-product] query category info failed", log.Field("user_id", userID), log.Field("category_uuid", categoryUUID), log.Err(err))
 		http_response.Error(c, http.StatusInternalServerError, err, nil)
 		return
 	}
@@ -47,12 +47,12 @@ func (h Handler) Create(c *gin.Context) {
 
 	_, err = h.Product.Create(ctx, data)
 	if err != nil {
-		log.For(c).Error("[create-district] insert data failed", log.Field("user_id", userID), log.Err(err))
+		log.For(c).Error("[create-product] insert data failed", log.Field("user_id", userID), log.Err(err))
 		http_response.Error(c, http.StatusInternalServerError, err, nil)
 		return
 	}
 
-	log.For(c).Info("[create-district] process success", log.Field("user_id", userID), log.Field("uuid", data.UUID))
+	log.For(c).Info("[create-product] process success", log.Field("user_id", userID), log.Field("uuid", data.UUID))
 	c.JSON(http.StatusOK, &apis.CreateResponse{
 		UUID: data.UUID,
 	})

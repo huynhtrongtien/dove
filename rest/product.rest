@@ -1,36 +1,38 @@
-@port = 3001
+@port = 3002
 @host = localhost:{{port}}
-@token = Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJUR0wgU29sdXRpb25zIiwiZXhwIjoiMjAyNC0wNy0wMVQxMDowMToxMy42NzQ2NTIrMDc6MDAiLCJ1c2VyX2lkIjo3fQ.gri5NLpqlnKegM660_HXgoWYuxj3Jy1mvkN4GdT9lSU
-@user = users
+@token = Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiIyMDI1LTAxLTA2VDE3OjI3OjIzLjA1NDkzKzA3OjAwIiwidXNlcl9pZCI6MX0.1-83ch9WOjroGCqOEv2ynSo4nTJLUzc-5CQJGJrG58g
+@categories = categories
+@category_id = b08bbdef-551a-4e04-b78e-45aa4d4458ba
+@product_id = cfb44e2a-b84e-49ac-bba9-3e01f6fdc997
 
 ###########
 # PRODUCT #
 ###########
 # Create
-POST http://{{host}}/api/v1/districts HTTP/1.1
+POST http://{{host}}/api/v1/categories/{{category_id}}/products HTTP/1.1
 {{token}}
 Content-Type: application/json
 
-{"name":"Quận 1","province_uuid":"646e448c-557a-4d34-a634-a6be2cba30a9","display_order":2}
+{"fullname":"Ghế nhựa Thuận Thành","code":"Product002"}
 
 ###########
 # Read
-GET http://{{host}}/api/v1/districts/256f1a60-3cc6-4a4d-ad31-064fbbee3424 HTTP/1.1
+GET http://{{host}}/api/v1/categories/{{category_id}}/products/{{product_id}} HTTP/1.1
 {{token}}
 Content-Type: application/json
 
 ###########
 # List
-GET http://{{host}}/api/v1/districts?province_uuid=646e448c-557a-4d34-a634-a6be2cba30a9 HTTP/1.1
+GET http://{{host}}/api/v1/categories/{{category_id}}/products HTTP/1.1
 {{token}}
 Content-Type: application/json
 
 ###########
 # Update
-PUT http://{{host}}/api/v1/districts/8b38a767-ad50-494d-8840-14935502b6e9 HTTP/1.1
+PUT http://{{host}}/api/v1/categories/{{category_id}}/products/{{product_id}} HTTP/1.1
 {{token}}
 Content-Type: application/json
 
-{"name":"Thành phố Thủ Đức","province_uuid":"646e448c-557a-4d34-a634-a6be2cba30a9","display_order":1}
+{"fullname":"Bàn gỗ Minh Châu","code":"Product002"}
 
 ###

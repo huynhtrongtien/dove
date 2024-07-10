@@ -3,9 +3,9 @@
 @token = Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiIyMDI1LTAxLTA2VDE3OjI3OjIzLjA1NDkzKzA3OjAwIiwidXNlcl9pZCI6MX0.1-83ch9WOjroGCqOEv2ynSo4nTJLUzc-5CQJGJrG58g
 @user = users
 
-###########
+############
 # CATEGORY #
-###########
+############
 # Create
 POST http://{{host}}/api/v1/categories HTTP/1.1
 {{token}}
