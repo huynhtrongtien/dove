@@ -14,3 +14,21 @@
 {"level":"info","ts":"2024-07-10T16:57:07.268+0700","caller":"dove/main.go:176","msg":"[init-database] create database connection success","address":"127.0.0.1:33061","dbname":"TestDB"}
 {"level":"info","ts":"2024-07-10T16:57:07.268+0700","caller":"dove/main.go:186","msg":"[init-services] process success"}
 {"level":"info","ts":"2024-07-10T16:57:07.268+0700","caller":"dove/main.go:97","msg":"[start service] start service","host":"localhost:3002"}
+{"level":"info","ts":"2024-07-10T17:10:21.508+0700","caller":"dove/main.go:176","msg":"[init-database] create database connection success","address":"127.0.0.1:33061","dbname":"TestDB"}
+{"level":"info","ts":"2024-07-10T17:10:21.509+0700","caller":"dove/main.go:186","msg":"[init-services] process success"}
+{"level":"info","ts":"2024-07-10T17:10:21.510+0700","caller":"dove/main.go:97","msg":"[start service] start service","host":"localhost:3002"}
+{"level":"info","ts":"2024-07-10T17:11:37.199+0700","caller":"dove/main.go:176","msg":"[init-database] create database connection success","address":"127.0.0.1:33061","dbname":"TestDB"}
+{"level":"info","ts":"2024-07-10T17:11:37.199+0700","caller":"dove/main.go:186","msg":"[init-services] process success"}
+{"level":"info","ts":"2024-07-10T17:11:37.199+0700","caller":"dove/main.go:97","msg":"[start service] start service","host":"localhost:3002"}
+{"level":"info","ts":"2024-07-10T17:17:41.790+0700","caller":"dove/main.go:176","msg":"[init-database] create database connection success","address":"127.0.0.1:33061","dbname":"TestDB"}
+{"level":"info","ts":"2024-07-10T17:17:41.791+0700","caller":"dove/main.go:186","msg":"[init-services] process success"}
+{"level":"info","ts":"2024-07-10T17:17:41.791+0700","caller":"dove/main.go:97","msg":"[start service] start service","host":"localhost:3002"}
+{"level":"error","ts":"2024-07-10T17:17:49.305+0700","caller":"account/login.go:27","msg":"[login] authen token failed","trace_id":"00000000000000000000000000000000","span_id":"0000000000000000"}
+{"level":"error","ts":"2024-07-10T17:18:44.990+0700","caller":"account/login.go:27","msg":"[login] authen token failed","trace_id":"00000000000000000000000000000000","span_id":"0000000000000000"}
+{"level":"info","ts":"2024-07-10T17:27:11.569+0700","caller":"dove/main.go:176","msg":"[init-database] create database connection success","address":"127.0.0.1:33061","dbname":"TestDB"}
+{"level":"info","ts":"2024-07-10T17:27:11.571+0700","caller":"dove/main.go:186","msg":"[init-services] process success"}
+{"level":"info","ts":"2024-07-10T17:27:11.571+0700","caller":"dove/main.go:97","msg":"[start service] start service","host":"localhost:3002"}
+{"level":"info","ts":"2024-07-10T17:27:23.055+0700","caller":"account/login.go:35","msg":"[login] process success","trace_id":"00000000000000000000000000000000","span_id":"0000000000000000","user_id":1}
+{"level":"info","ts":"2024-07-10T17:28:03.671+0700","caller":"account/me.go:24","msg":"[me] process success","trace_id":"00000000000000000000000000000000","span_id":"0000000000000000","user_id":1}
+{"level":"debug","ts":"2024-07-10T17:29:29.224+0700","caller":"account/self_update.go:18","msg":"[self-update-profile] start process","trace_id":"00000000000000000000000000000000","span_id":"0000000000000000","user_id":1}
+{"level":"info","ts":"2024-07-10T17:29:54.965+0700","caller":"account/self_update.go:46","msg":"[self-update-profile] process success","trace_id":"00000000000000000000000000000000","span_id":"0000000000000000","user_id":1}

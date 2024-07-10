@@ -10,21 +10,21 @@ import (
 	"github.com/huynhtrongtien/dove/pkg/log"
 )
 
-func (h Handler) Authenticate(c *gin.Context) {
+func (h Handler) Login(c *gin.Context) {
 	ctx := c.Request.Context()
 	req := &apis.AuthenticateRequest{}
 
 	err := http_parser.BindAndValid(c, req)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, err)
-		log.For(c).Error("[authenticate] invalid request", log.Err(err))
+		log.For(c).Error("[login] invalid request", log.Err(err))
 		http_response.Error(c, http.StatusBadRequest, err, nil)
 		return
 	}
 
 	userID, token, err := h.User.Authenticate(ctx, req.Username, req.Password)
 	if err != nil {
-		log.For(c).Error("[authenticate] authen token failed")
+		log.For(c).Error("[login] authen token failed", log.Field("username", req.Username), log.Err(err))
 		http_response.Error(c, http.StatusBadRequest, err, &http_response.Message{
 			VI: "Username hoặc password không đúng",
 			EN: "Username or password is incorrect",
@@ -32,7 +32,7 @@ func (h Handler) Authenticate(c *gin.Context) {
 		return
 	}
 
-	log.For(c).Info("[authenticate] process success", log.Field("user_id", userID))
+	log.For(c).Info("[login] process success", log.Field("user_id", userID))
 	c.JSON(http.StatusOK, &apis.AuthenticateResponse{
 		Token: token,
 	})

@@ -63,7 +63,7 @@ func StartHTTPServer() {
 	productHandler := product.NewHandler()
 
 	router.POST("/api/v1/auth/register", accountHandler.Register)
-	router.POST("/api/v1/auth/login", accountHandler.Authenticate)
+	router.POST("/api/v1/auth/login", accountHandler.Login)
 
 	apiV1 := router.Group("/api/v1", middlewares.Authenticate())
 	{

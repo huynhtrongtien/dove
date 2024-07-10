@@ -56,7 +56,7 @@ func (p *User) Authenticate(ctx context.Context, username, password string) (int
 		return 0, "", err
 	}
 
-	if crypto.CheckPasswordHash(password, data.PasswordHash) {
+	if crypto.CheckPasswordHash(data.PasswordHash, password) == false {
 		return 0, "", fmt.Errorf("password is incorrect")
 	}
 
