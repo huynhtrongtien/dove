@@ -1,0 +1,16 @@
+{"level":"info","ts":"2024-07-10T16:27:14.850+0700","caller":"dove/main.go:175","msg":"[init-database] create database connection success","address":"127.0.0.1:33061","dbname":"TestDB"}
+{"level":"info","ts":"2024-07-10T16:27:23.485+0700","caller":"dove/main.go:185","msg":"[init-services] process success"}
+{"level":"info","ts":"2024-07-10T16:28:22.548+0700","caller":"dove/main.go:176","msg":"[init-database] create database connection success","address":"127.0.0.1:33061","dbname":"TestDB"}
+{"level":"info","ts":"2024-07-10T16:28:22.549+0700","caller":"dove/main.go:186","msg":"[init-services] process success"}
+{"level":"info","ts":"2024-07-10T16:29:28.657+0700","caller":"dove/main.go:176","msg":"[init-database] create database connection success","address":"127.0.0.1:33061","dbname":"TestDB"}
+{"level":"info","ts":"2024-07-10T16:29:28.658+0700","caller":"dove/main.go:186","msg":"[init-services] process success"}
+{"level":"info","ts":"2024-07-10T16:41:25.801+0700","caller":"dove/main.go:173","msg":"[init-database] create database connection success","address":"127.0.0.1:33061","dbname":"TestDB"}
+{"level":"info","ts":"2024-07-10T16:41:25.802+0700","caller":"dove/main.go:183","msg":"[init-services] process success"}
+{"level":"info","ts":"2024-07-10T16:53:26.313+0700","caller":"dove/main.go:173","msg":"[init-database] create database connection success","address":"127.0.0.1:33061","dbname":"TestDB"}
+{"level":"info","ts":"2024-07-10T16:53:26.313+0700","caller":"dove/main.go:183","msg":"[init-services] process success"}
+{"level":"info","ts":"2024-07-10T16:56:22.802+0700","caller":"dove/main.go:176","msg":"[init-database] create database connection success","address":"127.0.0.1:33061","dbname":"TestDB"}
+{"level":"info","ts":"2024-07-10T16:56:22.802+0700","caller":"dove/main.go:186","msg":"[init-services] process success"}
+{"level":"info","ts":"2024-07-10T16:56:22.802+0700","caller":"dove/main.go:97","msg":"[start service] start service","host":"localhost:3002"}
+{"level":"info","ts":"2024-07-10T16:57:07.268+0700","caller":"dove/main.go:176","msg":"[init-database] create database connection success","address":"127.0.0.1:33061","dbname":"TestDB"}
+{"level":"info","ts":"2024-07-10T16:57:07.268+0700","caller":"dove/main.go:186","msg":"[init-services] process success"}
+{"level":"info","ts":"2024-07-10T16:57:07.268+0700","caller":"dove/main.go:97","msg":"[start service] start service","host":"localhost:3002"}

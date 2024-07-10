@@ -1,0 +1,36 @@
+@port = 3001
+@host = localhost:{{port}}
+@token = Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJUR0wgU29sdXRpb25zIiwiZXhwIjoiMjAyNC0wNy0wMVQxMDowMToxMy42NzQ2NTIrMDc6MDAiLCJ1c2VyX2lkIjo3fQ.gri5NLpqlnKegM660_HXgoWYuxj3Jy1mvkN4GdT9lSU
+@user = users
+
+###########
+# PRODUCT #
+###########
+# Create
+POST http://{{host}}/api/v1/districts HTTP/1.1
+{{token}}
+Content-Type: application/json
+
+{"name":"Quận 1","province_uuid":"646e448c-557a-4d34-a634-a6be2cba30a9","display_order":2}
+
+###########
+# Read
+GET http://{{host}}/api/v1/districts/256f1a60-3cc6-4a4d-ad31-064fbbee3424 HTTP/1.1
+{{token}}
+Content-Type: application/json
+
+###########
+# List
+GET http://{{host}}/api/v1/districts?province_uuid=646e448c-557a-4d34-a634-a6be2cba30a9 HTTP/1.1
+{{token}}
+Content-Type: application/json
+
+###########
+# Update
+PUT http://{{host}}/api/v1/districts/8b38a767-ad50-494d-8840-14935502b6e9 HTTP/1.1
+{{token}}
+Content-Type: application/json
+
+{"name":"Thành phố Thủ Đức","province_uuid":"646e448c-557a-4d34-a634-a6be2cba30a9","display_order":1}
+
+###

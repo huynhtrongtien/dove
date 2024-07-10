@@ -1,0 +1,9 @@
+[service]
+port = 3002
+[database]
+address = "127.0.0.1:33061"
+dbname = "TestDB"
+username = "root"
+password = "123456"
+[jwt]
+key = "izrHbxA1N4T1pATsaLRPPBH6Qo89oID3"
