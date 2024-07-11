@@ -11,6 +11,8 @@ import (
 	"go.opentelemetry.io/otel/sdk/trace"
 )
 
+// https://www.alibabacloud.com/help/en/opentelemetry/user-guide/use-managed-service-for-opentelemetry-to-submit-the-trace-data-of-a-go-application
+
 // tracerProvider returns an OpenTelemetry TracerProvider configured to use
 // the Jaeger exporter that will send spans to the provided url. The returned
 // TracerProvider will also use a Resource configured with all the information
@@ -22,6 +24,7 @@ import (
 * environment: prod
  */
 func StartOpenTelemetry(serviceName, jaegerEntryPoint, environment string) (*trace.TracerProvider, error) {
+	jaegerEntryPoint = "http://localhost:4320/v1/traces"
 	exp, err := jaeger.New(jaeger.WithCollectorEndpoint(jaeger.WithEndpoint(jaegerEntryPoint)))
 	if err != nil {
 		return nil, err
@@ -50,10 +53,17 @@ func StartOpenTelemetry(serviceName, jaegerEntryPoint, environment string) (*tra
 	return tp, nil
 }
 
-func StartOpenTelemetryByUDP(serviceName, host, port, environment string) (*trace.TracerProvider, error) {
+type JaegerUDPConfig struct {
+	Environment string
+	ServiceName string
+	Host        string
+	Port        string
+}
+
+func StartOpenTelemetryByUDP2(config *JaegerUDPConfig) (*trace.TracerProvider, error) {
 	exp, err := jaeger.New(jaeger.WithAgentEndpoint(
-		jaeger.WithAgentHost(host),
-		jaeger.WithAgentPort(port),
+		jaeger.WithAgentHost(config.Host),
+		jaeger.WithAgentPort(config.Port),
 	))
 	if err != nil {
 		return nil, err
@@ -69,8 +79,8 @@ func StartOpenTelemetryByUDP(serviceName, host, port, environment string) (*trac
 		// Record information about this application in a Resource.
 		trace.WithResource(resource.NewWithAttributes(
 			semconv.SchemaURL,
-			semconv.ServiceNameKey.String(serviceName),
-			attribute.String("environment", environment),
+			semconv.ServiceNameKey.String(config.ServiceName),
+			attribute.String("environment", config.Environment),
 			// attribute.Int64("ID", id),
 		)),
 	)

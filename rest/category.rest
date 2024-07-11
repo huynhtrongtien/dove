@@ -11,7 +11,7 @@ POST http://{{host}}/api/v1/categories HTTP/1.1
 {{token}}
 Content-Type: application/json
 
-{"fullname":"Trang phục","code":"Cat002"}
+{"fullname":"Tranh","code":"Cat003"}
 
 ###########
 # Read
@@ -34,3 +34,11 @@ Content-Type: application/json
 {"fullname":"Bàn ghế","code":"Cat003"}
 
 ###
+
+###########
+# List
+POST http://localhost:4318/v1/traces HTTP/1.1
+{{token}}
+Content-Type: application/json
+
+###########

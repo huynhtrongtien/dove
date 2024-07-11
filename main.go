@@ -16,6 +16,7 @@ import (
 	"github.com/huynhtrongtien/dove/controllers/v1/product"
 	"github.com/huynhtrongtien/dove/middlewares"
 	"github.com/huynhtrongtien/dove/pkg/log"
+	"github.com/huynhtrongtien/dove/pkg/tracing"
 	"github.com/huynhtrongtien/dove/pkg/utilities"
 	"github.com/huynhtrongtien/dove/services"
 	"github.com/spf13/viper"
@@ -37,6 +38,8 @@ func StartHTTPServer() {
 
 	router := gin.Default()
 	router.Use(gin.Recovery())
+
+	// setup CORS
 	router.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"http://localhost:3000", "http://localhost:3001", "https://sky-crm.click", "http://sky-crm.click", "https://crm.tgl-cloud.com"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
@@ -49,6 +52,7 @@ func StartHTTPServer() {
 		MaxAge: 12 * time.Hour,
 	}))
 
+	// setup static file
 	/*
 		router.LoadHTMLGlob("webapp/*")
 		router.GET("/", func(ctx *gin.Context) {
@@ -56,8 +60,34 @@ func StartHTTPServer() {
 		})
 	*/
 
-	// apis
+	// setup tracing
+	jaegerConfig := &tracing.JaegerHTTPConfig{
+		Environment: viper.GetString("trace.environment"),
+		ServiceName: viper.GetString("trace.service_name"),
+		Endpoint:    viper.GetString("trace.end_point"),
+		URLPath:     viper.GetString("trace.url_path"),
+	}
 
+	tracing.StartOpenTelemetryV2(jaegerConfig)
+
+	/*
+		if _, err := tracing.StartOpenTelemetryV2(jaegerConfig); err != nil {
+			log.Bg().Fatal("[start-http-server] connect to jaeger udp failed", zap.Error(err))
+			return
+		}
+	*/
+
+	/*
+		if _, err := tracing.StartOpenTelemetry(jaegerConfig.ServiceName, "", jaegerConfig.Environment); err != nil {
+			log.Bg().Fatal("[start-http-server] connect to jaeger udp failed", zap.Error(err))
+			return
+		}
+	*/
+
+	tracing.SetupMiddleware(router, jaegerConfig.ServiceName)
+	log.Bg().Info("[start-http-server] connect to jaeger udp success")
+
+	// apis
 	accountHandler := account.NewHandler()
 	categoryHandler := category.NewHandler()
 	productHandler := product.NewHandler()

@@ -13,7 +13,7 @@ POST http://{{host}}/api/v1/categories/{{category_id}}/products HTTP/1.1
 {{token}}
 Content-Type: application/json
 
-{"fullname":"Ghế nhựa Thuận Thành","code":"Product002"}
+{"fullname":"Bàn nhựa Minh Tân","code":"Product004"}
 
 ###########
 # Read
