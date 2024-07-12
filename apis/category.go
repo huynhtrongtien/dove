@@ -1,9 +1,10 @@
 package apis
 
 type Category struct {
-	UUID     string `json:"uuid,omitempty"`
-	FullName string `json:"fullname,omitempty"`
-	Code     string `json:"code,omitempty"`
+	UUID     string     `json:"uuid,omitempty"`
+	FullName string     `json:"fullname,omitempty"`
+	Code     string     `json:"code,omitempty"`
+	Products []*Product `json:"products,omitempty"`
 }
 
 type CreateCategoryRequest struct {

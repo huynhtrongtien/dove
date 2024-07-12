@@ -5,16 +5,12 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
-	"time"
 
 	"github.com/fsnotify/fsnotify"
-	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/huynhtrongtien/dove/clients"
-	"github.com/huynhtrongtien/dove/controllers/v1/account"
-	"github.com/huynhtrongtien/dove/controllers/v1/category"
-	"github.com/huynhtrongtien/dove/controllers/v1/product"
-	category_v2 "github.com/huynhtrongtien/dove/controllers/v2/category"
+	"github.com/huynhtrongtien/dove/controllers/v3/category"
+	"github.com/huynhtrongtien/dove/controllers/v3/product"
 	"github.com/huynhtrongtien/dove/global"
 	"github.com/huynhtrongtien/dove/middlewares"
 	"github.com/huynhtrongtien/dove/pkg/log"
@@ -42,27 +38,6 @@ func StartHTTPServer() {
 	router := gin.Default()
 	router.Use(gin.Recovery())
 
-	// setup CORS
-	router.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:3000", "http://localhost:3001", "https://sky-crm.click", "http://sky-crm.click", "https://crm.tgl-cloud.com"},
-		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
-		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
-		ExposeHeaders:    []string{"Content-Length"},
-		AllowCredentials: true,
-		AllowOriginFunc: func(origin string) bool {
-			return (origin == "http://localhost:3000") || (origin == "http://localhost:3001") || (origin == "https://sky-crm.click") || (origin == "http://sky-crm.click")
-		},
-		MaxAge: 12 * time.Hour,
-	}))
-
-	// setup static file
-	/*
-		router.LoadHTMLGlob("webapp/*")
-		router.GET("/", func(ctx *gin.Context) {
-			ctx.HTML(http.StatusOK, "index.html", nil)
-		})
-	*/
-
 	// setup tracing
 	jaegerConfig := &tracing.JaegerHTTPConfig{
 		Environment: global.Environment(),
@@ -74,47 +49,18 @@ func StartHTTPServer() {
 	tracing.SetupMiddleware(router, jaegerConfig.ServiceName)
 	log.Bg().Info("[start-http-server] connect to jaeger udp success")
 
-	// apis
-	accountHandler := account.NewHandler()
 	categoryHandler := category.NewHandler()
-	categoryV2Handler := category_v2.NewHandler()
 	productHandler := product.NewHandler()
-
-	router.POST("/api/v1/auth/register", accountHandler.Register)
-	router.POST("/api/v1/auth/login", accountHandler.Login)
-
-	apiV1 := router.Group("/api/v1", middlewares.Authenticate())
+	apiV3 := router.Group("/api/v3")
 	{
-		meClient := apiV1.Group("/me")
+		categoryClient := apiV3.Group("/categories")
 		{
-			meClient.GET("", accountHandler.Me)
-			meClient.PUT("", accountHandler.SelfUpdate)
-		}
-
-		categoryClient := apiV1.Group("/categories")
-		{
-			categoryClient.POST("", categoryHandler.Create)
 			categoryClient.GET("/:category_uuid", categoryHandler.Read)
-			categoryClient.GET("", categoryHandler.List)
-			categoryClient.PUT("/:category_uuid", categoryHandler.Update)
-			categoryClient.DELETE("/:category_uuid", categoryHandler.Delete)
 		}
 
-		productClient := apiV1.Group("/categories/:category_uuid/products")
+		productClient := apiV3.Group("/categories/:category_uuid/products")
 		{
-			productClient.POST("", productHandler.Create)
-			productClient.GET("/:product_uuid", productHandler.Read)
 			productClient.GET("", productHandler.List)
-			productClient.PUT("/:product_uuid", productHandler.Update)
-			productClient.DELETE("/:product_uuid", productHandler.Delete)
-		}
-	}
-
-	apiV2 := router.Group("/api/v2", middlewares.Authenticate())
-	{
-		categoryClient := apiV2.Group("/categories")
-		{
-			categoryClient.GET("/:category_uuid", categoryV2Handler.Read)
 		}
 	}
 

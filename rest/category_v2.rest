@@ -1,0 +1,11 @@
+@port = 3002
+@host = localhost:{{port}}
+@token = Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiIyMDI1LTAxLTA2VDE3OjI3OjIzLjA1NDkzKzA3OjAwIiwidXNlcl9pZCI6MX0.1-83ch9WOjroGCqOEv2ynSo4nTJLUzc-5CQJGJrG58g
+
+###########
+# Read
+GET http://{{host}}/api/v2/categories/b08bbdef-551a-4e04-b78e-45aa4d4458ba HTTP/1.1
+{{token}}
+Content-Type: application/json
+
+###########

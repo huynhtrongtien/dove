@@ -1,0 +1,22 @@
+[service]
+port = 3004
+name = "product-service"
+environment = "dev"
+
+[database]
+address = "127.0.0.1:33061"
+dbname = "TestDB"
+username = "root"
+password = "123456"
+
+[jwt]
+key = "izrHbxA1N4T1pATsaLRPPBH6Qo89oID3"
+
+[trace]
+end_point = "localhost:4318"
+url_path = "/v1/traces"
+
+[redis]
+address = "127.0.0.1:6379"
+max_retry = 5
+password = ""

@@ -1,17 +1,15 @@
-package http
+package client
 
 import (
 	"context"
 	"io"
 	"net/http"
-	"net/http/httptrace"
 	"time"
 
-	"go.opentelemetry.io/contrib/instrumentation/net/http/httptrace/otelhttptrace"
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 )
 
-type Client struct {
+type HTTPClient struct {
 	client *http.Client
 }
 
@@ -22,13 +20,13 @@ type HTTPClientConfig struct {
 	MaxIdleConnsPerHost int
 }
 
-func NewClient(config *HTTPClientConfig) *Client {
+func NewHTTPClient(config *HTTPClientConfig) *HTTPClient {
 	t := http.DefaultTransport.(*http.Transport).Clone()
 	t.MaxIdleConns = config.MaxIdleConns
 	t.MaxConnsPerHost = config.MaxConnsPerHost
 	t.MaxIdleConnsPerHost = config.MaxIdleConnsPerHost
 
-	return &Client{
+	return &HTTPClient{
 		client: &http.Client{
 			Timeout:   config.Timeout,
 			Transport: t,
@@ -36,8 +34,8 @@ func NewClient(config *HTTPClientConfig) *Client {
 	}
 }
 
-func NewDefaultClient() *Client {
-	return NewClient(&HTTPClientConfig{
+func NewDefaultHTTPClient() *HTTPClient {
+	return NewHTTPClient(&HTTPClientConfig{
 		Timeout:             10 * time.Second,
 		MaxIdleConns:        100,
 		MaxConnsPerHost:     100,
@@ -45,7 +43,7 @@ func NewDefaultClient() *Client {
 	})
 }
 
-func (c *Client) Get(ctx context.Context, url string) ([]byte, int, error) {
+func (c *HTTPClient) Get(ctx context.Context, url string) ([]byte, int, error) {
 	resp, err := otelhttp.Get(ctx, url)
 	if err != nil {
 		return nil, 0, err
@@ -60,14 +58,9 @@ func (c *Client) Get(ctx context.Context, url string) ([]byte, int, error) {
 	return bytes, resp.StatusCode, nil
 }
 
-func (c *Client) GetV2(ctx context.Context, url string) ([]byte, int, error) {
-	ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
-	if err != nil {
-		return nil, 0, err
-	}
-
-	resp, err := c.client.Do(req)
+func (c *HTTPClient) GetWithTrace(ctx context.Context, url string) ([]byte, int, error) {
+	// ctx = httptrace.WithClientTrace(ctx, otelhttptrace.NewClientTrace(ctx))
+	resp, err := otelhttp.Get(ctx, url)
 	if err != nil {
 		return nil, 0, err
 	}
