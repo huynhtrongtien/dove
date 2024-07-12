@@ -14,6 +14,7 @@ import (
 	"github.com/huynhtrongtien/dove/controllers/v1/account"
 	"github.com/huynhtrongtien/dove/controllers/v1/category"
 	"github.com/huynhtrongtien/dove/controllers/v1/product"
+	"github.com/huynhtrongtien/dove/global"
 	"github.com/huynhtrongtien/dove/middlewares"
 	"github.com/huynhtrongtien/dove/pkg/log"
 	"github.com/huynhtrongtien/dove/pkg/tracing"
@@ -23,10 +24,11 @@ import (
 )
 
 func main() {
-	// init service
 	initViper()
 	initLogger()
+	initGlobalSetting()
 	initDatabase()
+	initRedis()
 	initServices()
 	middlewares.InitMiddlewares()
 
@@ -62,28 +64,12 @@ func StartHTTPServer() {
 
 	// setup tracing
 	jaegerConfig := &tracing.JaegerHTTPConfig{
-		Environment: viper.GetString("trace.environment"),
-		ServiceName: viper.GetString("trace.service_name"),
+		Environment: global.Environment(),
+		ServiceName: global.ServiceName(),
 		Endpoint:    viper.GetString("trace.end_point"),
 		URLPath:     viper.GetString("trace.url_path"),
 	}
-
 	tracing.StartOpenTelemetryV2(jaegerConfig)
-
-	/*
-		if _, err := tracing.StartOpenTelemetryV2(jaegerConfig); err != nil {
-			log.Bg().Fatal("[start-http-server] connect to jaeger udp failed", zap.Error(err))
-			return
-		}
-	*/
-
-	/*
-		if _, err := tracing.StartOpenTelemetry(jaegerConfig.ServiceName, "", jaegerConfig.Environment); err != nil {
-			log.Bg().Fatal("[start-http-server] connect to jaeger udp failed", zap.Error(err))
-			return
-		}
-	*/
-
 	tracing.SetupMiddleware(router, jaegerConfig.ServiceName)
 	log.Bg().Info("[start-http-server] connect to jaeger udp success")
 
@@ -181,6 +167,13 @@ func initLogger() {
 	})
 }
 
+func initGlobalSetting() {
+	if err := global.InitSetting(); err != nil {
+		log.Bg().Fatal("[init-global-setting] read global config failed", log.Err(err))
+		os.Exit(-1)
+	}
+}
+
 func initDatabase() {
 	var err error
 	cfg := &clients.MySQLConfig{
@@ -204,6 +197,25 @@ func initDatabase() {
 	}
 
 	log.Bg().Info("[init-database] create database connection success", log.Field("address", cfg.Address), log.Field("dbname", cfg.DBName))
+}
+
+func initRedis() {
+	viper.SetDefault("redis.max_retry", 3)
+	cfg := &clients.RedisConfig{
+		Address:  viper.GetString("redis.address"),
+		MaxRetry: viper.GetInt("redis.max_retry"),
+		Password: viper.GetString("redis.password"),
+	}
+
+	var err error
+	clients.RedisClient, err = clients.NewRedisClient(cfg)
+	if err != nil {
+		log.Bg().Fatal("[init-redis] create database connection failed", log.Field("file", viper.ConfigFileUsed()), log.Field("address", cfg.Address), log.Err(err))
+		os.Exit(-1)
+		return
+	}
+
+	log.Bg().Info("[init-redis] create database connection success", log.Field("address", cfg.Address))
 }
 
 func initServices() {

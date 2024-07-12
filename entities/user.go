@@ -12,12 +12,12 @@ func (s Role) Value() int32 {
 }
 
 type User struct {
-	ID           int64  `gorm:"column:id;primaryKey"`
-	UUID         string `gorm:"column:displayname;size:200"`
-	DisplayName  string `gorm:"column:displayname;size:200"`
-	Username     string `gorm:"column:username;size:200"`
-	PasswordHash string `gorm:"column:password_hash;size:200"`
-	Role         Role   `gorm:"column:role"`
+	ID           int64  `gorm:"column:id;primaryKey" redis:"id"`
+	UUID         string `gorm:"column:displayname;size:200" redis:"uuid"`
+	DisplayName  string `gorm:"column:displayname;size:200" redis:"displayname"`
+	Username     string `gorm:"column:username;size:200" redis:"-"`
+	PasswordHash string `gorm:"column:password_hash;size:200" redis:"-"`
+	Role         Role   `gorm:"column:role" redis:"-"`
 }
 
 func (*User) TableName() string {

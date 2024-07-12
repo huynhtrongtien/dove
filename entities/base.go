@@ -7,14 +7,13 @@ import (
 )
 
 type Base struct {
-	UUID      string         `gorm:"column:uuid;omitempty"`
-	CreatedBy int64          `gorm:"column:created_by;omitempty"`
-	Creator   *User          `gorm:"references:created_by;foreignKey:id;omitempty"`
-	CreatedAt time.Time      `gorm:"column:created_at;omitempty"`
-	UpdatedBy int64          `gorm:"column:updated_by;omitempty"`
-	Updater   *User          `gorm:"references:updated_by;foreignKey:id;omitempty"`
-	UpdatedAt time.Time      `gorm:"column:updated_at"`
-	DeletedAt gorm.DeletedAt `swaggertype:"string" gorm:"index;column:deleted_at"`
+	CreatedBy int64          `gorm:"column:created_by;omitempty" redis:"-"`
+	Creator   *User          `gorm:"references:created_by;foreignKey:id;omitempty" redis:"-"`
+	CreatedAt time.Time      `gorm:"column:created_at;omitempty" redis:"-"`
+	UpdatedBy int64          `gorm:"column:updated_by;omitempty" redis:"-"`
+	Updater   *User          `gorm:"references:updated_by;foreignKey:id;omitempty" redis:"-"`
+	UpdatedAt time.Time      `gorm:"column:updated_at" redis:"-"`
+	DeletedAt gorm.DeletedAt `swaggertype:"string" gorm:"index;column:deleted_at" redis:"-"`
 }
 
 func (b *Base) GetCreator() *User {

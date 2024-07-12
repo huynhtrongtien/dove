@@ -29,6 +29,22 @@ func (Category) Create(ctx context.Context, data *entities.Category) (int64, err
 	return data.ID, err
 }
 
+func (Category) FirstOnly(ctx context.Context, filters map[string]any) (*entities.Category, error) {
+	result := &entities.Category{}
+
+	db := clients.MySQLClient.WithContext(ctx).Table(result.TableName())
+	for field, val := range filters {
+		db = db.Where(fmt.Sprintf("%s = ?", field), val)
+	}
+
+	err := db.First(result).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return result, nil
+}
+
 func (Category) First(ctx context.Context, filters map[string]any) (*entities.Category, error) {
 	result := &entities.Category{}
 

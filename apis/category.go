@@ -7,7 +7,7 @@ type Category struct {
 }
 
 type CreateCategoryRequest struct {
-	FullName string `json:"fullname,omitempty" binding:"required" valid:"MaxSize(100)"`
+	FullName string `json:"fullname" binding:"required" valid:"MaxSize(100)"`
 	Code     string `json:"code,omitempty"`
 }
 

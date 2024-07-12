@@ -17,6 +17,7 @@ type MySQLConfig struct {
 	Password string
 }
 
+// Global
 var MySQLClient *gorm.DB
 
 func NewMySQLClient(config *MySQLConfig) (*gorm.DB, error) {

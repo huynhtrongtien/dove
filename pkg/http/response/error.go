@@ -20,18 +20,13 @@ type errorData struct {
 func Error(c *gin.Context, code int, err error, msg *Message) {
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		c.JSON(http.StatusBadRequest, &errorData{
-			Message: &Message{
-				VI: msg.VI,
-				EN: msg.EN,
-			},
+			Message: msg,
 		})
+
 		return
 	}
 
 	c.JSON(code, &errorData{
-		Message: &Message{
-			VI: msg.VI,
-			EN: msg.EN,
-		},
+		Message: msg,
 	})
 }

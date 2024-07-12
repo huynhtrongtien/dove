@@ -26,7 +26,7 @@ func (h Handler) Update(c *gin.Context) {
 
 	// get UUID form URL
 	uuid := c.Param("product_uuid")
-	data, err := h.Product.ReadByUUID(ctx, uuid)
+	data, err := h.Product.ReadFromDB(ctx, uuid)
 	if err != nil {
 		log.For(c).Debug("[update-product] query database failed", log.Field("user_id", userID), log.Field("uuid", uuid), log.Err(err))
 		response.Error(c, http.StatusInternalServerError, err, nil)

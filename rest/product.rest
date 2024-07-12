@@ -3,7 +3,7 @@
 @token = Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiIyMDI1LTAxLTA2VDE3OjI3OjIzLjA1NDkzKzA3OjAwIiwidXNlcl9pZCI6MX0.1-83ch9WOjroGCqOEv2ynSo4nTJLUzc-5CQJGJrG58g
 @categories = categories
 @category_id = b08bbdef-551a-4e04-b78e-45aa4d4458ba
-@product_id = cfb44e2a-b84e-49ac-bba9-3e01f6fdc997
+@product_id = da8a7721-415d-4be0-a718-896906dc05e3
 
 ###########
 # PRODUCT #
@@ -13,7 +13,7 @@ POST http://{{host}}/api/v1/categories/{{category_id}}/products HTTP/1.1
 {{token}}
 Content-Type: application/json
 
-{"fullname":"Bàn nhựa Minh Tân","code":"Product004"}
+{"fullname":"Bàn gỗ Tân Phú 2","code":"Product008"}
 
 ###########
 # Read
@@ -33,6 +33,14 @@ PUT http://{{host}}/api/v1/categories/{{category_id}}/products/{{product_id}} HT
 {{token}}
 Content-Type: application/json
 
-{"fullname":"Bàn gỗ Minh Châu","code":"Product002"}
+{"fullname":"Bàn gỗ Becamex 2","code":"Product008"}
+
+###
+
+###########
+# Delete
+DELETE http://{{host}}/api/v1/categories/{{category_id}}/products/{{product_id}} HTTP/1.1
+{{token}}
+Content-Type: application/json
 
 ###
