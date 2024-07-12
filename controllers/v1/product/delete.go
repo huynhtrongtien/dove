@@ -5,7 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/huynhtrongtien/dove/middlewares"
-	"github.com/huynhtrongtien/dove/pkg/http_response"
+	"github.com/huynhtrongtien/dove/pkg/http/response"
 	"github.com/huynhtrongtien/dove/pkg/log"
 )
 
@@ -19,14 +19,14 @@ func (h Handler) Delete(c *gin.Context) {
 	data, err := h.Product.ReadByUUID(ctx, uuid)
 	if err != nil {
 		log.For(c).Debug("[delete-product] query info failed", log.Field("user_id", userID), log.Field("uuid", uuid), log.Err(err))
-		http_response.Error(c, http.StatusInternalServerError, err, nil)
+		response.Error(c, http.StatusInternalServerError, err, nil)
 		return
 	}
 
 	err = h.Product.Delete(ctx, data.ID)
 	if err != nil {
 		log.For(c).Debug("[delete-product] execute database failed", log.Field("user_id", userID), log.Field("id", data.ID), log.Err(err))
-		http_response.Error(c, http.StatusInternalServerError, err, nil)
+		response.Error(c, http.StatusInternalServerError, err, nil)
 		return
 	}
 

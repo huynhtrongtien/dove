@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/huynhtrongtien/dove/apis"
 	"github.com/huynhtrongtien/dove/middlewares"
-	"github.com/huynhtrongtien/dove/pkg/http_response"
+	"github.com/huynhtrongtien/dove/pkg/http/response"
 	"github.com/huynhtrongtien/dove/pkg/log"
 )
 
@@ -20,7 +20,7 @@ func (h Handler) Read(c *gin.Context) {
 	data, err := h.Category.ReadByUUID(ctx, uuid)
 	if err != nil {
 		log.For(c).Debug("[read-category] query database failed", log.Field("user_id", userID), log.Field("uuid", uuid))
-		http_response.Error(c, http.StatusInternalServerError, err, nil)
+		response.Error(c, http.StatusInternalServerError, err, nil)
 		return
 	}
 

@@ -1,4 +1,4 @@
-package http_parser
+package request
 
 import (
 	"time"

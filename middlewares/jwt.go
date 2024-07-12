@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/huynhtrongtien/dove/pkg/http_parser"
+	"github.com/huynhtrongtien/dove/pkg/http/request"
 	"github.com/huynhtrongtien/dove/pkg/jwt"
 	"github.com/huynhtrongtien/dove/services"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
@@ -31,7 +31,7 @@ func Authenticate() gin.HandlerFunc {
 		var payload interface{}
 
 		bearerToken := c.GetHeader("Authorization")
-		token, _ := http_parser.ParseTokenFromBearerToken(bearerToken)
+		token, _ := request.ParseTokenFromBearerToken(bearerToken)
 
 		if token == "" {
 			code = UNAUTHORIZED

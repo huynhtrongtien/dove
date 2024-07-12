@@ -7,8 +7,8 @@ import (
 	"github.com/huynhtrongtien/dove/apis"
 	"github.com/huynhtrongtien/dove/entities"
 	"github.com/huynhtrongtien/dove/middlewares"
-	"github.com/huynhtrongtien/dove/pkg/http_parser"
-	"github.com/huynhtrongtien/dove/pkg/http_response"
+	"github.com/huynhtrongtien/dove/pkg/http/request"
+	"github.com/huynhtrongtien/dove/pkg/http/response"
 	"github.com/huynhtrongtien/dove/pkg/log"
 )
 
@@ -21,10 +21,10 @@ func (h Handler) Create(c *gin.Context) {
 	log.For(c).Debug("[create-product] start process", log.Field("user_id", userID))
 
 	// parse JSON
-	err := http_parser.BindJSONAndValid(c, req)
+	err := request.BindJSONAndValid(c, req)
 	if err != nil {
 		log.For(c).Debug("[create-product] invalid request", log.Field("user_id", userID), log.Err(err))
-		http_response.Error(c, http.StatusBadRequest, err, nil)
+		response.Error(c, http.StatusBadRequest, err, nil)
 		return
 	}
 
@@ -32,7 +32,7 @@ func (h Handler) Create(c *gin.Context) {
 	category, err := h.Category.ReadByUUID(ctx, categoryUUID)
 	if err != nil {
 		log.For(c).Debug("[create-product] query category info failed", log.Field("user_id", userID), log.Field("category_uuid", categoryUUID), log.Err(err))
-		http_response.Error(c, http.StatusInternalServerError, err, nil)
+		response.Error(c, http.StatusInternalServerError, err, nil)
 		return
 	}
 
@@ -48,7 +48,7 @@ func (h Handler) Create(c *gin.Context) {
 	_, err = h.Product.Create(ctx, data)
 	if err != nil {
 		log.For(c).Error("[create-product] insert data failed", log.Field("user_id", userID), log.Err(err))
-		http_response.Error(c, http.StatusInternalServerError, err, nil)
+		response.Error(c, http.StatusInternalServerError, err, nil)
 		return
 	}
 

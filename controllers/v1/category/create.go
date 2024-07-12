@@ -8,8 +8,8 @@ import (
 	"github.com/huynhtrongtien/dove/apis"
 	"github.com/huynhtrongtien/dove/entities"
 	"github.com/huynhtrongtien/dove/middlewares"
-	"github.com/huynhtrongtien/dove/pkg/http_parser"
-	"github.com/huynhtrongtien/dove/pkg/http_response"
+	"github.com/huynhtrongtien/dove/pkg/http/request"
+	"github.com/huynhtrongtien/dove/pkg/http/response"
 	"github.com/huynhtrongtien/dove/pkg/log"
 	"gorm.io/gorm"
 )
@@ -20,10 +20,10 @@ func (h Handler) Create(c *gin.Context) {
 	log.For(c).Debug("[create-category] start process", log.Field("user_id", userID))
 
 	req := &apis.CreateCategoryRequest{}
-	err := http_parser.BindJSONAndValid(c, req)
+	err := request.BindJSONAndValid(c, req)
 	if err != nil {
 		log.For(c).Error("[create-category] invalid request", log.Field("user_id", userID), log.Err(err))
-		http_response.Error(c, http.StatusBadRequest, err, nil)
+		response.Error(c, http.StatusBadRequest, err, nil)
 		return
 	}
 
@@ -39,7 +39,7 @@ func (h Handler) Create(c *gin.Context) {
 
 	if errors.Is(err, gorm.ErrRecordNotFound) == false {
 		log.For(c).Debug("[update-category] query database failed", log.Field("user_id", userID), log.Err(err))
-		http_response.Error(c, http.StatusInternalServerError, err, nil)
+		response.Error(c, http.StatusInternalServerError, err, nil)
 		return
 	}
 
@@ -54,7 +54,7 @@ func (h Handler) Create(c *gin.Context) {
 	_, err = h.Category.Create(ctx, data)
 	if err != nil {
 		log.For(c).Error("[create-category] query category info failed", log.Field("user_id", userID), log.Err(err))
-		http_response.Error(c, http.StatusBadRequest, err, nil)
+		response.Error(c, http.StatusBadRequest, err, nil)
 		return
 	}
 

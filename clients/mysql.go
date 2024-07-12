@@ -7,6 +7,7 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
+	"gorm.io/plugin/opentelemetry/tracing"
 )
 
 type MySQLConfig struct {
@@ -28,6 +29,11 @@ func NewMySQLClient(config *MySQLConfig) (*gorm.DB, error) {
 		Logger:                                   logger.Default.LogMode(logger.Info),
 		DisableForeignKeyConstraintWhenMigrating: true,
 	})
+	if err != nil {
+		return nil, err
+	}
+
+	err = client.Use(tracing.NewPlugin())
 	if err != nil {
 		return nil, err
 	}

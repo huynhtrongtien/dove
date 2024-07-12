@@ -7,7 +7,7 @@ import (
 	"github.com/huynhtrongtien/dove/apis"
 	"github.com/huynhtrongtien/dove/entities"
 	"github.com/huynhtrongtien/dove/pkg/crypto"
-	"github.com/huynhtrongtien/dove/pkg/http_parser"
+	"github.com/huynhtrongtien/dove/pkg/http/request"
 	"github.com/huynhtrongtien/dove/pkg/log"
 )
 
@@ -15,7 +15,7 @@ func (h Handler) Register(c *gin.Context) {
 	ctx := c.Request.Context()
 	req := &apis.Register{}
 
-	err := http_parser.BindAndValid(c, req)
+	err := request.BindAndValid(c, req)
 	if err != nil {
 		log.For(c).Error("[register] invalid request", log.Err(err))
 		c.JSON(http.StatusBadRequest, err)

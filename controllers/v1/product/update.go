@@ -6,8 +6,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/huynhtrongtien/dove/apis"
 	"github.com/huynhtrongtien/dove/middlewares"
-	"github.com/huynhtrongtien/dove/pkg/http_parser"
-	"github.com/huynhtrongtien/dove/pkg/http_response"
+	"github.com/huynhtrongtien/dove/pkg/http/request"
+	"github.com/huynhtrongtien/dove/pkg/http/response"
 	"github.com/huynhtrongtien/dove/pkg/log"
 )
 
@@ -17,10 +17,10 @@ func (h Handler) Update(c *gin.Context) {
 	log.For(c).Debug("[update-product] start process", log.Field("user_id", userID))
 
 	req := &apis.UpdateProductRequest{}
-	err := http_parser.BindAndValid(c, req)
+	err := request.BindAndValid(c, req)
 	if err != nil {
 		log.For(c).Debug("[update-product] invalid request", log.Field("user_id", userID), log.Err(err))
-		http_response.Error(c, http.StatusBadRequest, err, nil)
+		response.Error(c, http.StatusBadRequest, err, nil)
 		return
 	}
 
@@ -29,7 +29,7 @@ func (h Handler) Update(c *gin.Context) {
 	data, err := h.Product.ReadByUUID(ctx, uuid)
 	if err != nil {
 		log.For(c).Debug("[update-product] query database failed", log.Field("user_id", userID), log.Field("uuid", uuid), log.Err(err))
-		http_response.Error(c, http.StatusInternalServerError, err, nil)
+		response.Error(c, http.StatusInternalServerError, err, nil)
 		return
 	}
 
@@ -39,7 +39,7 @@ func (h Handler) Update(c *gin.Context) {
 	err = h.Product.Update(ctx, data)
 	if err != nil {
 		log.For(c).Error("[update-product] update database failed", log.Field("user_id", userID), log.Field("id", data.ID), log.Err(err))
-		http_response.Error(c, http.StatusInternalServerError, err, nil)
+		response.Error(c, http.StatusInternalServerError, err, nil)
 		return
 	}
 
